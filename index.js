@@ -14,14 +14,14 @@ app.get("/", function(req, res) {
 //invoked after hitting go in the html form
 app.post("/", function(req, res) {
     
-    // takes in the city name from the html form, display in // console. Takes in as string.
-        var name = String(req.body.nameInput);
-        console.log(req.body.nameInput);
+    // takes in the city ID from the html form, display in // console. Takes in as string.
+        var id = String(req.body.idInput);
+        console.log(req.body.idInput);
     
     //build up the URL for the JSON query, API Key is // secret and needs to be obtained by signup 
         const units = "imperial";
         const apiKey = "ed83ec6f91552fa762538146eef4e349";
-        const url = "https://api.openweathermap.org/data/2.5/weather?q=" + name + "&units=" + units + "&APPID=" + apiKey;
+        const url = "https://api.openweathermap.org/data/2.5/weather?id=" + id + "&units=" + units + "&APPID=" + apiKey;
     
     // this gets the data from Open WeatherPI
     https.get(url, function(response){
@@ -37,10 +37,12 @@ app.post("/", function(req, res) {
             const imageURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
             const humidity = weatherData.main.humidity;
             const wind = weatherData.wind.speed;
+            const wind2 = weatherData.wind.direction;
+            const clouds = weatherData.clouds.all;
             
             // displays the output of the results
             res.write("<h1> The weather is " + weatherDescription + "<h1>");
-            res.write("<h2>The Temperature in " + cityName + " is " + temp + " Degrees Fahrenheit with " + humidity + "% humidity and wind speed of " + wind + " miles per hour. " + "<h2>");
+            res.write("<h2>The Temperature in " + cityName + " is " + temp + " Degrees Fahrenheit with " + humidity + "% humidity and wind speed of " + wind + " miles per hour with wind direction at " + wind2 + " and " + clouds + "% cloudiness. " + "<h2>");
             res.write("<img src=" + imageURL +">");
             res.send();
         });
